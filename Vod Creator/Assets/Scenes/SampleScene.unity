@@ -227,7 +227,7 @@ Camera:
   field of view: 34
   orthographic: 1
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 10
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -271,12 +271,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   VP: {fileID: 2111307033}
   clips:
-  - {fileID: 32900000, guid: 9694589e100abc740a0d8f8a610cd600, type: 3}
-  - {fileID: 32900000, guid: 44882551481531245876c159fa32494f, type: 3}
+  - {fileID: 32900000, guid: d8abf416f04964148a8384999d6bf70d, type: 3}
+  - {fileID: 32900000, guid: 4baf7fbf01f6e884293968efc85f77fc, type: 3}
   videoPlayers: []
   index: 0
-  renderCamera: {fileID: 519420031}
-  texture2D: {fileID: 0}
+  tempPixel: {fileID: 8629151726947813731, guid: 8264b6048eec5d749a63f8580dde15d7, type: 3}
+  pixels: []
+  Yellow:
+    serializedVersion: 2
+    rgba: 4285983718
+  Green:
+    serializedVersion: 2
+    rgba: 4289381478
+  Red:
+    serializedVersion: 2
+    rgba: 4283849712
 --- !u!1 &2111307033
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +296,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2111307035}
   - component: {fileID: 2111307034}
+  - component: {fileID: 2111307036}
   m_Layer: 0
   m_Name: Video Player
   m_TagString: Untagged
@@ -310,7 +320,7 @@ VideoPlayer:
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
-  m_RenderMode: 1
+  m_RenderMode: 0
   m_AspectRatio: 2
   m_DataSource: 0
   m_TimeUpdateMode: 2
@@ -345,6 +355,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2111307036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2111307033}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01025186e898a924da7fbce3606eb399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 2111307034}
+  startTime: 0
+  clip: {fileID: 0}
+  renderCamera: {fileID: 519420031}
+  texture2D: {fileID: 0}
+  Yellow:
+    serializedVersion: 2
+    rgba: 0
+  Green:
+    serializedVersion: 2
+    rgba: 0
+  Red:
+    serializedVersion: 2
+    rgba: 0
+  creator: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
