@@ -6,6 +6,7 @@ using UnityEngine.Video;
 public class videoPlayer : MonoBehaviour
 {
     public GameObject VP;  // Reference to the VideoPlayer component
+    public GameObject cam;
 
     public VideoClip[] clips;
     public List<GameObject> videoPlayers = new List<GameObject>();
@@ -27,9 +28,15 @@ public class videoPlayer : MonoBehaviour
         {
             GameObject g = Instantiate(VP);
 
+
+
             videoPlayers.Add(g);
 
             VOD vid = g.GetComponent<VOD>();
+
+            vid.cam = Instantiate(cam);
+            vid.cam.SetActive(false);
+
             vid.clip = clips[i];
             vid.Green = this.Green;
             vid.Red = this.Red;
@@ -38,6 +45,7 @@ public class videoPlayer : MonoBehaviour
 
             VideoPlayer vp = g.GetComponent<VideoPlayer>();
             vp.clip = clips[i];
+            //vp.targetCamera = vid.cam.GetComponent<Camera>();
             g.SetActive(false);
 
             
@@ -50,20 +58,7 @@ public class videoPlayer : MonoBehaviour
     void Update()
     {
         // Check for the "P" key to pause the video
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            // Pause the video if it's playing
-            if (videoPlayers[index].GetComponent<VideoPlayer>().isPlaying)
-            {
-                videoPlayers[index].GetComponent<VideoPlayer>().Pause();
-                Debug.Log("Video paused.");
-            }
-            else
-            {
-                videoPlayers[index].GetComponent<VideoPlayer>().Play();  // Optional: if you want to resume playing on pressing P again
-                Debug.Log("Video playing.");
-            }
-        }
+        
         if (Input.GetKeyDown(KeyCode.Q))
         {
             StartCoroutine(switchVideos());
@@ -92,8 +87,10 @@ public class videoPlayer : MonoBehaviour
         int nextIndex = 0;
         if (currIndex >= videoPlayers.Count - 1) nextIndex = 0;
         else nextIndex = currIndex + 1;
+
+
         
-        videoPlayers[nextIndex].SetActive(true);
+        /*videoPlayers[nextIndex].SetActive(true);
         
         videoPlayers[nextIndex].GetComponent<VideoPlayer>().time = videoPlayers[nextIndex].GetComponent<VOD>().startTime + (videoPlayers[currIndex].GetComponent<VideoPlayer>().time - videoPlayers[currIndex].GetComponent<VOD>().startTime);
         videoPlayers[nextIndex].GetComponent<VideoPlayer>().Prepare();
@@ -111,7 +108,11 @@ public class videoPlayer : MonoBehaviour
         
          yield return new WaitForEndOfFrame();
          videoPlayers[currIndex].GetComponent<VideoPlayer>().Stop();
-         videoPlayers[currIndex].SetActive(false);
+         videoPlayers[currIndex].SetActive(false);*/
+        videoPlayers[nextIndex].GetComponent<VOD>().cam.SetActive(true);
+        videoPlayers[currIndex].GetComponent<VOD>().cam.SetActive(false);
+        yield return null;
+
         index++;
         if (index >= videoPlayers.Count)
         {
@@ -121,7 +122,25 @@ public class videoPlayer : MonoBehaviour
         
     }
 
-    
+    public void startAll()
+    {
+        for (int i = 0; i < videoPlayers.Count; i++)
+        {
+            videoPlayers[i].SetActive(true);
+            videoPlayers[i].GetComponent<VideoPlayer>().playbackSpeed = 1;
+            videoPlayers[i].GetComponent<VideoPlayer>().Stop();
+            videoPlayers[i].GetComponent<VideoPlayer>().time = videoPlayers[i].GetComponent<VOD>().startTime;
+            videoPlayers[i].GetComponent<VideoPlayer>().targetCamera = videoPlayers[i].GetComponent<VOD>().cam.GetComponent<Camera>();
+        }
+        for (int i = 0; i < videoPlayers.Count; i++)
+        {
+            
+            videoPlayers[i].GetComponent<VideoPlayer>().Play();
+           
+        }
+        videoPlayers[0].GetComponent<VOD>().cam.SetActive(true);
+    }
+
     public void renderNext()
     {
         videoPlayers[index].SetActive(false);
@@ -133,8 +152,7 @@ public class videoPlayer : MonoBehaviour
         else
         {
             index = 0;
-            videoPlayers[index].SetActive(true);
-            videoPlayers[index].GetComponent<VideoPlayer>().time = videoPlayers[index].GetComponent<VOD>().startTime;
+            this.startAll();
         }
     }
     

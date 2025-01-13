@@ -23,6 +23,8 @@ public class VOD : MonoBehaviour
 
     public videoPlayer creator;
 
+    public GameObject cam;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -51,7 +53,7 @@ public class VOD : MonoBehaviour
     private IEnumerator FindStartTime()
     {
         //player.renderMode = VideoRenderMode.APIOnly;
-        player.playbackSpeed = 10;
+        player.playbackSpeed = 3.5f;
         player.Play();
 
 
