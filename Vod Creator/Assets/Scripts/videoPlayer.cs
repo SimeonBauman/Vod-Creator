@@ -8,7 +8,7 @@ public class videoPlayer : MonoBehaviour
     public GameObject VP;  // Reference to the VideoPlayer component
     public GameObject cam;
 
-    public VideoClip[] clips;
+    public List<VideoClip> clips;
     public List<GameObject> videoPlayers = new List<GameObject>();
     public int index = 0;
 
@@ -25,8 +25,10 @@ public class videoPlayer : MonoBehaviour
     {
         Screen.SetResolution(1920,1080, false);
 
+        JSONReader.readJSON();
+        
 
-        for (int i = 0; i < clips.Length; i++)
+        for (int i = 0; i < JSONReader.vid.players.Length; i++)
         {
             GameObject g = Instantiate(VP);
 
@@ -39,20 +41,24 @@ public class videoPlayer : MonoBehaviour
             vid.cam = Instantiate(cam);
             vid.cam.SetActive(false);
 
-            vid.clip = clips[i];
+            vid.clip = JSONReader.vid.players[i].path;
             vid.Green = this.Green;
             vid.Red = this.Red;
             vid.Yellow = this.Yellow;
             vid.creator = this.GetComponent<videoPlayer>();
 
+            if (JSONReader.vid.players[0].startTime != "") vid.startTime = int.Parse(JSONReader.vid.players[0].startTime);
+
+
             VideoPlayer vp = g.GetComponent<VideoPlayer>();
-            vp.clip = clips[i];
+            vp.url = JSONReader.vid.players[i].path;
             //vp.targetCamera = vid.cam.GetComponent<Camera>();
             g.SetActive(false);
 
             
             
         }
+        if (JSONReader.vid.players[0].startTime != "") this.startAll();
         videoPlayers[0].SetActive(true);
         //videoPlayers[1].SetActive(true);
 
@@ -125,23 +131,26 @@ public class videoPlayer : MonoBehaviour
         
     }
 
-    public void startAll()
+    public IEnumerator startAll()
     {
         for (int i = 0; i < videoPlayers.Count; i++)
         {
             videoPlayers[i].SetActive(true);
             videoPlayers[i].GetComponent<VideoPlayer>().playbackSpeed = 1;
             videoPlayers[i].GetComponent<VideoPlayer>().Stop();
-            videoPlayers[i].GetComponent<VideoPlayer>().time = videoPlayers[i].GetComponent<VOD>().startTime;
+            
             videoPlayers[i].GetComponent<VideoPlayer>().targetCamera = videoPlayers[i].GetComponent<VOD>().cam.GetComponent<Camera>();
         }
         for (int i = 0; i < videoPlayers.Count; i++)
         {
-            
-            videoPlayers[i].GetComponent<VideoPlayer>().Play();
-           
+            //try prepare
+            videoPlayers[i].GetComponent<VideoPlayer>().Play(); 
+            while(!videoPlayers[i].GetComponent<VideoPlayer>().isPlaying) yield return new WaitForEndOfFrame();
+            videoPlayers[i].GetComponent<VideoPlayer>().time = videoPlayers[i].GetComponent<VOD>().startTime;
+
         }
         videoPlayers[0].GetComponent<VOD>().cam.SetActive(true);
+        yield return null;
     }
 
     public void renderNext()
@@ -155,7 +164,9 @@ public class videoPlayer : MonoBehaviour
         else
         {
             index = 0;
-            this.startAll();
+            JSONReader.writeToJSON("", JSONReader.vid.players);
+            StartCoroutine(this.startAll());
+            
         }
     }
     

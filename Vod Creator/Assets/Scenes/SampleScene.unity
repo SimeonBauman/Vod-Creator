@@ -494,7 +494,7 @@ VideoPlayer:
   m_TargetMaterialProperty: <noninit>
   m_RenderMode: 0
   m_AspectRatio: 2
-  m_DataSource: 0
+  m_DataSource: 1
   m_TimeUpdateMode: 2
   m_PlaybackSpeed: 1
   m_AudioOutputMode: 2
@@ -541,7 +541,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 2111307034}
   startTime: 0
-  clip: {fileID: 0}
+  clip: 
   renderCamera: {fileID: 519420031}
   texture2D: {fileID: 0}
   Yellow:

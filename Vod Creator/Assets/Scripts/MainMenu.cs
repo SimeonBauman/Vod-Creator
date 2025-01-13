@@ -4,11 +4,12 @@ using TMPro;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
 
-    public GameObject[] startScreen;
+    public List<GameObject> startScreen;
     public GameObject[] creationScreen;
 
     public List<string> paths;
@@ -16,6 +17,8 @@ public class MainMenu : MonoBehaviour
     public GameObject selection;
 
     public TMP_InputField[] inputFields;
+
+    public TMP_InputField VODName;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -26,7 +29,7 @@ public class MainMenu : MonoBehaviour
 
     public void showCreationScreen(bool active = false)
     {
-        for (int i = 0; i < startScreen.Length; i++) { 
+        for (int i = 0; i < startScreen.Count; i++) { 
             startScreen[i].SetActive(active);
         }
         for(int i = 0;i < creationScreen.Length; i++) {
@@ -41,18 +44,24 @@ public class MainMenu : MonoBehaviour
         {
             if(inputFields[i].text != "")
             {
-                Debug.Log(i);
+                
                 index = i;
                 break;
             }
         }
 
-        POVdata[] POVs = new POVdata[index];
+        POVdata[] POVs = new POVdata[index+1];
 
-        for (int i = 0; i < index; i++)
+        for (int i = 0; i <= index; i++)
         {
+            Debug.Log(i);
+            POVs[i] = new POVdata();
             POVs[i].path = inputFields[i].text;
         }
+
+        JSONReader.writeToJSON(VODName.text, POVs);
+
+        SceneManager.LoadScene(1);
     }
 
     public void checkForFiles()
@@ -85,6 +94,7 @@ public class MainMenu : MonoBehaviour
             g.GetComponent<RectTransform>().localPosition = new Vector2(150, (-i * 110) + 250);
             int index = i;
             //g.GetComponent<Button>().onClick.AddListener(() => this.selectQuiz(index));
+            startScreen.Add(g);
         }
 
     }

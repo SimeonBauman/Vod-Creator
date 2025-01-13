@@ -12,7 +12,7 @@ public class VOD : MonoBehaviour
 
     public double startTime = 0;
 
-    public VideoClip clip;
+    public string clip;
 
     public Camera renderCamera; // Camera to capture video frame
     public Texture2D texture2D;
@@ -32,7 +32,10 @@ public class VOD : MonoBehaviour
         
         
         player.prepareCompleted += OnVideoPrepared;
-        StartCoroutine(FindStartTime());
+        if (startTime == 0)
+        {
+            StartCoroutine(FindStartTime());
+        }
     }
 
     // Update is called once per frame
@@ -103,6 +106,8 @@ public class VOD : MonoBehaviour
             yield return new WaitForEndOfFrame();
             yield return new WaitForEndOfFrame();
         }
+
+        JSONReader.vid.players[creator.index].startTime = this.startTime.ToString();
 
         creator.renderNext();
 

@@ -7,19 +7,24 @@ using System.IO;
 public class JSONReader
 {
     public static string jsonPath = "Assets/VODs/test.json";
-    public static POV temp;
+    public static POV vid;
 
     public static void readJSON()
     {
         string data = File.ReadAllText(jsonPath);
-        temp = JsonUtility.FromJson<POV>(data);
+        vid = JsonUtility.FromJson<POV>(data);
         Debug.Log(data);
-        Debug.Log(temp.players[0].path);
+        Debug.Log(vid.players[0].path);
     }
 
-    public static void writeToJSON()
+    public static void writeToJSON(string name, POVdata[] paths)
     {
-
+        if(name != "") jsonPath = "Assets/VODs/" + name + ".json";
+        POV pt = new POV();
+        pt.players = paths;
+        string temp = JsonUtility.ToJson(pt,true);
+        File.WriteAllText(jsonPath, temp);
+        
     }
 }
 
