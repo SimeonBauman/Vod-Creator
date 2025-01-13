@@ -71,7 +71,7 @@ public class MenuController : MonoBehaviour
 
     public void jumpTen()
     {
-        bool startTime = false;
+        
         for (int i = 0; i < vp.videoPlayers.Count; i++)
         {
             vp.videoPlayers[i].GetComponent<VideoPlayer>().time = vp.videoPlayers[i].GetComponent<VideoPlayer>().time + 10;

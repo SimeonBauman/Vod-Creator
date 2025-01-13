@@ -23,6 +23,8 @@ public class videoPlayer : MonoBehaviour
 
     private void Start()
     {
+        Screen.SetResolution(1920,1080, false);
+
 
         for (int i = 0; i < clips.Length; i++)
         {
@@ -63,7 +65,8 @@ public class videoPlayer : MonoBehaviour
         {
             StartCoroutine(switchVideos());
         }
-        
+
+        this.switchVideosByNumber();
         
         
     }
@@ -156,4 +159,35 @@ public class videoPlayer : MonoBehaviour
         }
     }
     
+    public void switchVideosByNumber()
+    {
+        int i = 10000;
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            i = 0;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            i = 1;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            i = 2;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+        {
+            i = 3;
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            i = 4;
+        }
+
+        if (i < videoPlayers.Count )
+        {
+            videoPlayers[i].GetComponent<VOD>().cam.SetActive(true);
+            if(index != i) videoPlayers[index].GetComponent<VOD>().cam.SetActive(false);
+            index = i;
+        }
+    }
 }
