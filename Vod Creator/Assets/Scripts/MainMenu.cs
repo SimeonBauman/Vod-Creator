@@ -14,6 +14,8 @@ public class MainMenu : MonoBehaviour
     public List<string> paths;
 
     public GameObject selection;
+
+    public TMP_InputField[] inputFields;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,7 +36,23 @@ public class MainMenu : MonoBehaviour
 
     public void createVOD()
     {
+        int index = 0;
+        for(int i = inputFields.Length-1; i >= 0; i--)
+        {
+            if(inputFields[i].text != "")
+            {
+                Debug.Log(i);
+                index = i;
+                break;
+            }
+        }
 
+        POVdata[] POVs = new POVdata[index];
+
+        for (int i = 0; i < index; i++)
+        {
+            POVs[i].path = inputFields[i].text;
+        }
     }
 
     public void checkForFiles()
