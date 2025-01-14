@@ -54,9 +54,10 @@ public class MainMenu : MonoBehaviour
 
         for (int i = 0; i <= index; i++)
         {
-            Debug.Log(i);
+            
             POVs[i] = new POVdata();
             POVs[i].path = inputFields[i].text;
+            POVs[i].path = POVs[i].path.Trim('"');
         }
 
         JSONReader.writeToJSON(VODName.text, POVs);
@@ -93,10 +94,17 @@ public class MainMenu : MonoBehaviour
             //texts[1].text = "Last Score: " + Questions.corPer + "%";
             g.GetComponent<RectTransform>().localPosition = new Vector2(150, (-i * 110) + 250);
             int index = i;
-            //g.GetComponent<Button>().onClick.AddListener(() => this.selectQuiz(index));
+            g.GetComponent<Button>().onClick.AddListener(() => this.selectVod("Assets/VODs/" + paths[index]));
             startScreen.Add(g);
         }
 
+    }
+
+    void selectVod(string path)
+    {
+        JSONReader.jsonPath = path;
+        JSONReader.readJSON();
+        SceneManager.LoadScene(1);   
     }
 
 }

@@ -13,8 +13,8 @@ public class JSONReader
     {
         string data = File.ReadAllText(jsonPath);
         vid = JsonUtility.FromJson<POV>(data);
-        Debug.Log(data);
-        Debug.Log(vid.players[0].path);
+        
+        
     }
 
     public static void writeToJSON(string name, POVdata[] paths)

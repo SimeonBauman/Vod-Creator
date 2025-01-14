@@ -47,7 +47,7 @@ public class videoPlayer : MonoBehaviour
             vid.Yellow = this.Yellow;
             vid.creator = this.GetComponent<videoPlayer>();
 
-            if (JSONReader.vid.players[0].startTime != "") vid.startTime = int.Parse(JSONReader.vid.players[0].startTime);
+           if (JSONReader.vid.players[0].startTime != "") vid.startTime = double.Parse(JSONReader.vid.players[i].startTime);
 
 
             VideoPlayer vp = g.GetComponent<VideoPlayer>();
@@ -58,8 +58,9 @@ public class videoPlayer : MonoBehaviour
             
             
         }
-        if (JSONReader.vid.players[0].startTime != "") this.startAll();
-        videoPlayers[0].SetActive(true);
+        
+        if (videoPlayers[0].GetComponent<VOD>().startTime > 0) StartCoroutine(this.startAll());
+        else videoPlayers[0].SetActive(true);
         //videoPlayers[1].SetActive(true);
 
     }
@@ -133,20 +134,34 @@ public class videoPlayer : MonoBehaviour
 
     public IEnumerator startAll()
     {
+        //Camera.main.gameObject.GetComponent<Camera>().enabled = false;
+        
         for (int i = 0; i < videoPlayers.Count; i++)
         {
-            videoPlayers[i].SetActive(true);
+            
+            
             videoPlayers[i].GetComponent<VideoPlayer>().playbackSpeed = 1;
             videoPlayers[i].GetComponent<VideoPlayer>().Stop();
             
-            videoPlayers[i].GetComponent<VideoPlayer>().targetCamera = videoPlayers[i].GetComponent<VOD>().cam.GetComponent<Camera>();
+            
         }
         for (int i = 0; i < videoPlayers.Count; i++)
         {
+            //videoPlayers[i].GetComponent<VOD>().cam.SetActive(true);
+            videoPlayers[i].SetActive(false);
+            yield return new WaitForEndOfFrame();
+            videoPlayers[i].SetActive(true);
+            yield return new WaitForEndOfFrame();
+
             //try prepare
+            videoPlayers[i].GetComponent<VideoPlayer>().Prepare();
+            while (!videoPlayers[i].GetComponent<VideoPlayer>().isPrepared) { yield return new WaitForEndOfFrame(); Debug.Log("waiting"); }
             videoPlayers[i].GetComponent<VideoPlayer>().Play(); 
             while(!videoPlayers[i].GetComponent<VideoPlayer>().isPlaying) yield return new WaitForEndOfFrame();
+
             videoPlayers[i].GetComponent<VideoPlayer>().time = videoPlayers[i].GetComponent<VOD>().startTime;
+            videoPlayers[i].GetComponent<VideoPlayer>().targetCamera = videoPlayers[i].GetComponent<VOD>().cam.GetComponent<Camera>();
+            Debug.Log(videoPlayers[i].GetComponent<VOD>().cam.name);
 
         }
         videoPlayers[0].GetComponent<VOD>().cam.SetActive(true);
