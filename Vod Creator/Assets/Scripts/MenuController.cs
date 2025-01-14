@@ -13,10 +13,18 @@ public class MenuController : MonoBehaviour
 
     videoPlayer vp;
 
+    public GameObject[] menu;
+
+    float lastMouseMove;
+    Vector3 lastMousePosition;
+
+    public GameObject pauseIcon;
+    public GameObject playIcon;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         vp = controller.GetComponent<videoPlayer>();
+        this.hideMenu();
     }
 
     // Update is called once per frame
@@ -36,6 +44,38 @@ public class MenuController : MonoBehaviour
         {
             this.jumpTen();
         }
+
+        Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
+
+        if( mouseDelta != Vector3.zero )
+        {
+            this.showMenu();
+            lastMousePosition = Input.mousePosition;
+            lastMouseMove = Time.time;
+        }
+
+        if (Time.time - lastMouseMove > 1.5f)
+        {
+            this.hideMenu();
+        }
+
+
+    }
+
+    public void showMenu()
+    {
+        for(int i = 0; i < menu.Length; i++)
+        {
+            menu[i].SetActive(true);
+        }
+    }
+
+    public void hideMenu()
+    {
+        for (int i = 0; i < menu.Length; i++)
+        {
+            menu[i].SetActive(false);
+        }
     }
 
     public void pause()
@@ -45,11 +85,25 @@ public class MenuController : MonoBehaviour
 
         for (int i = 0; i < vp.videoPlayers.Count; i++)
         {
-            if (playing) vp.videoPlayers[i].GetComponent<VideoPlayer>().Pause();
-            else vp.videoPlayers[i].GetComponent<VideoPlayer>().Play();
+            if (playing)
+            {
+                vp.videoPlayers[i].GetComponent<VideoPlayer>().Pause();
+                pauseIcon.SetActive(false);
+                playIcon.SetActive(true);
+
+            }
+            else
+            {
+                vp.videoPlayers[i].GetComponent<VideoPlayer>().Play();
+                
+                pauseIcon.SetActive(true);
+                playIcon.SetActive(false);
+            }
         }
         
-            
+        this.showMenu();
+        lastMouseMove = Time.time;
+
     }
     public void backTen()
     {

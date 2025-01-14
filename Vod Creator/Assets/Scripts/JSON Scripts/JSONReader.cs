@@ -6,7 +6,7 @@ using System.IO;
 
 public class JSONReader
 {
-    public static string jsonPath = "Assets/VODs/test.json";
+    public static string jsonPath = "Assets/VODs/test2.json";
     public static POV vid;
 
     public static void readJSON()
