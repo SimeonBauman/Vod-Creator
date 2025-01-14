@@ -30,35 +30,37 @@ public class MenuController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (!videoPlayer.preping)
         {
-            this.pause();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                this.pause();
+            }
+
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                this.backTen();
+            }
+
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                this.jumpTen();
+            }
+
+            Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
+
+            if (mouseDelta != Vector3.zero)
+            {
+                this.showMenu();
+                lastMousePosition = Input.mousePosition;
+                lastMouseMove = Time.time;
+            }
+
+            if (Time.time - lastMouseMove > 1.5f)
+            {
+                this.hideMenu();
+            }
         }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            this.backTen();
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            this.jumpTen();
-        }
-
-        Vector3 mouseDelta = Input.mousePosition - lastMousePosition;
-
-        if( mouseDelta != Vector3.zero )
-        {
-            this.showMenu();
-            lastMousePosition = Input.mousePosition;
-            lastMouseMove = Time.time;
-        }
-
-        if (Time.time - lastMouseMove > 1.5f)
-        {
-            this.hideMenu();
-        }
-
 
     }
 

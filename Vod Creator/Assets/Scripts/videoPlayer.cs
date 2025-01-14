@@ -21,12 +21,16 @@ public class videoPlayer : MonoBehaviour
     public Color32 Green;
     public Color32 Red;
 
+    public static bool preping;
+    public GameObject prepScreen;
+
     private void Start()
     {
         Screen.SetResolution(1920,1080, false);
 
         JSONReader.readJSON();
         
+        preping = true;
 
         for (int i = 0; i < JSONReader.vid.players.Length; i++)
         {
@@ -67,14 +71,16 @@ public class videoPlayer : MonoBehaviour
     void Update()
     {
         // Check for the "P" key to pause the video
-        
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (!preping)
         {
-            StartCoroutine(switchVideos());
-        }
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                StartCoroutine(switchVideos());
+            }
 
-        this.switchVideosByNumber();
-        
+            this.switchVideosByNumber();
+        }
+        prepScreen.SetActive(preping);
         
     }
     void createPixels()
@@ -166,6 +172,7 @@ public class videoPlayer : MonoBehaviour
         }
         videoPlayers[0].GetComponent<VOD>().cam.SetActive(true);
         yield return null;
+        preping = false;
     }
 
     public void renderNext()
