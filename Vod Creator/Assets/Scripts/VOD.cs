@@ -59,6 +59,7 @@ public class VOD : MonoBehaviour
         player.playbackSpeed = 3.5f;
         player.Play();
 
+        int numOfFrames = 0;
 
         while (!player.isPlaying || texture2D == null)
         {
@@ -92,12 +93,23 @@ public class VOD : MonoBehaviour
                
                 if (matches(color,Yellow) || matches(color, Green) || matches(color, Red))
                 {
-                    this.startTime = player.time - 10;
-                    Debug.Log(startTime);
-                    Debug.Log(color);
-                    Debug.Log(i);
-                    player.Pause();
-                    break;
+                    if (numOfFrames == 1)
+                    {
+                        this.startTime = player.time - 20;
+                        Debug.Log(startTime);
+                        Debug.Log(color);
+                        Debug.Log(i);
+                        player.Pause();
+                        break;
+                    }
+                    else
+                    {
+                        numOfFrames++;
+                    }
+                }
+                else
+                {
+                    numOfFrames = 0;
                 }
             }
             yield return new WaitForEndOfFrame();
