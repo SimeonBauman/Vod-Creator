@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Video;
+
 public class videoPlayer : MonoBehaviour
 {
     public GameObject VP;  // Reference to the VideoPlayer component
@@ -26,7 +27,7 @@ public class videoPlayer : MonoBehaviour
 
     private void Start()
     {
-        Screen.SetResolution(1920,1080, false);
+        Screen.SetResolution(1920,1080, true);
 
         JSONReader.readJSON();
         
@@ -223,4 +224,6 @@ public class videoPlayer : MonoBehaviour
             index = i;
         }
     }
+
+    
 }

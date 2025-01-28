@@ -56,7 +56,7 @@ public class VOD : MonoBehaviour
     private IEnumerator FindStartTime()
     {
         //player.renderMode = VideoRenderMode.APIOnly;
-        player.playbackSpeed = 3.5f;
+        player.playbackSpeed = 2.5f;
         player.Play();
 
         int numOfFrames = 0;
@@ -83,16 +83,18 @@ public class VOD : MonoBehaviour
 
 
             // Copy pixels from the render texture to the Texture2D
-            texture2D.ReadPixels(new Rect(1750, 540, 1, 540), 0, 0);
+            texture2D.ReadPixels(new Rect(1725, 540, 1, 540), 0, 0);
             texture2D.Apply();
 
 
             for (int i = 0; i < 540; i++)
             {
-                Color32 color = texture2D.GetPixel(0, i);
                
+                Color32 color = texture2D.GetPixel(0, i);
+                if(Input.GetKey(KeyCode.K)) Debug.Log(color);
                 if (matches(color,Yellow) || matches(color, Green) || matches(color, Red))
                 {
+                    Debug.Log(color);
                     if (numOfFrames == 1)
                     {
                         this.startTime = player.time - 20;
@@ -127,12 +129,12 @@ public class VOD : MonoBehaviour
 
     bool matches(Color32 color, Color32 test)
     {
-        
-        if (color.g >= test.g -3 && color.g <= test.g + 3)
+        int error = 4;
+        if (color.g >= test.g -error && color.g <= test.g + error)
         {
-            if(color.b >= test.b - 3 && color.b <= test.b + 3)
+            if(color.b >= test.b - error && color.b <= test.b + error)
             {
-                if((color.r >= test.r - 3 && color.r <= test.r + 3))
+                if((color.r >= test.r - error && color.r <= test.r + error))
                 {
                     return true;
                 }

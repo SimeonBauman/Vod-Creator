@@ -6,6 +6,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Video;
 using UnityEngine.UI;
 using System;
+using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
@@ -132,5 +133,10 @@ public class MenuController : MonoBehaviour
         {
             vp.videoPlayers[i].GetComponent<VideoPlayer>().time = vp.videoPlayers[i].GetComponent<VideoPlayer>().time + 10;
         }
+    }
+
+    public void mainMenu()
+    {
+        SceneManager.LoadScene(0);
     }
 }
